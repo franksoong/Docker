@@ -17,11 +17,13 @@ jobs:
     - name: Get the version
       id: vars
       run: echo ::set-output name=tag::$(echo ${GITHUB_REF:10})
-    - name: Build the tagged Docker image
-      run: docker build . --file Dockerfile --tag sooong-image:${{steps.vars.outputs.tag}}
+    - name: Build the local Docker image
+      run: docker build . --file Dockerfile --tag local-image
+    - name: Tagge the Docker image
+      run: docker tag local-image neosoong/my-image:${{steps.vars.outputs.tag}}
     - name: Push the tagged Docker image
-      run: docker push sooong-image:${{steps.vars.outputs.tag}}
-    - name: Build the latest Docker image
-      run: docker build . --file Dockerfile --tag sooong-image:latest
+      run: docker push neosoong/my-image:${{steps.vars.outputs.tag}}
+    - name: Tagge the latest Docker image
+      run: docker tag local-image neosoong/my-image:latest
     - name: Push the latest Docker image
-      run: docker push sooong-image:latest
+      run: docker push neosoong/my-image:latest
